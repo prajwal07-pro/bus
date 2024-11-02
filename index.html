@@ -1,89 +1,295 @@
 <html lang="en">
 <head>
-    
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+      
        
 
-.styled-button {
-    margin-left: 10px;     /* Optional: Add space between the dropdown and button */
-    padding: 10px;         /* Adjust padding as needed */
-}
+       .styled-button {
+           margin-left: 10px;     /* Optional: Add space between the dropdown and button */
+           padding: 10px;         /* Adjust padding as needed */
+       }
+       
+       
+           @keyframes slideDown {
+           0% {
+               transform: translateY(-100px);
+               opacity: 0;
+           }
+           100% {
+               transform: translateY(0);
+               opacity: 1;
+           }
+       }
+       
+       .slide-down {
+           animation: slideDown 0.5s ease-in-out;
+       }
+       
+               .styled-button {
+           padding: 15px 25px; /* Increased padding */
+           font-size: 18px;    /* Larger font size */
+           border-radius: 8px;
+           background-color: #007bff;
+           color: #fff;
+           border: none;
+           cursor: pointer;
+           transition: background-color 0.3s ease;
+       }
+       .styled-button:hover {
+           background-color: #2484eb;
+       }
+       
+               /* Spinner styling */
+               #refresh-spinner {
+                   display: none; /* Initially hidden */
+                   position: fixed;
+                   top: 20px;
+                  left: 20px;
+                   width: 30px;
+                   height: 30px;
+                   border: 4px solid #f3f3f3;
+                   border-top: 4px solid #007bff;
+                   border-radius: 50%;
+                   animation: spin 1s linear infinite;
+                   z-index: 10;
+               }
+               
+               
+           </style>
+       </head>
+       <body>
+       
+           <style>
+               /* Global styling */
+               body {
+                   font-family: Arial, sans-serif;
+                   margin: 0;
+                   padding: 0;
+                   background: linear-gradient(135deg, #007bff, #6f42c1);
+                   color: #333;
+                   display: flex;
+                   flex-direction: column;
+                   align-items: center;
+               }
+               header {
+                   background-color: #ffffff;
+                   color: #333;
+                   width: 100%;
+                   padding: 10px 0;
+                   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+                   position: relative;
+                   display: flex;
+                   justify-content: center;
+                   align-items: center;
+               }
+               header h1 {
+                   font-size: 1.8em;
+               }
+               .icon {
+                   position: absolute;
+                   top: 15px;
+                   font-size: 24px;
+                   cursor: pointer;
+                   transition: transform 0.3s ease;
+               }
+               .icon:hover {
+                   transform: scale(1.2);
+               }
+               .notification-icon {
+                   right: 50px;
+               }
+               .menu-icon {
+                   right: 15px;
+               }
+               .menu-content, .notification-content {
+                   display: none;
+                   position: absolute;
+                   top: 50px;
+                   right: 15px;
+                   background-color: #ffffff;
+                   border-radius: 8px;
+                   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+                   width: 220px;
+                   padding: 10px;
+                   z-index: 5;
+               }
+               .menu-content a, .notification-content p {
+                   display: block;
+                   padding: 10px;
+                   color: #007bff;
+                   text-decoration: none;
+                   border-bottom: 1px solid #f0f0f0;
+               }
+               .menu-content a:hover {
+                   background-color: #f9f9f9;
+               }
+               .content {
+                   max-width: 800px;
+                   width: 100%;
+                   padding: 20px;
+               }
+               #map {
+                   width: 80%;
+                   
+                   height: 400px;
+                   border-radius: 8px;
+                   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+                   background: url('https://www.forestradar.com/storage/files/forest-monitoring-800x400.jpg?token=bc03dbe73d35c3cbec7a61dac9b5ed23') center/cover;
+                   position: relative;
+                   z-index: 1;
+               }
+               .loader {
+                   border: 4px solid #f3f3f3;
+                   border-top: 4px solid #007bff;
+                   border-radius: 50%;
+                   width: 50px;
+                   height: 50px;
+                   position: absolute;
+                   top: -60px;
+                   left: 50%;
+                   transform: translateX(-50%);
+                   animation: spin 1s linear infinite;
+               }
+               @keyframes spin {
+                   0% { transform: rotate(0deg); }
+                   100% { transform: rotate(360deg); }
+               }
+               .info-box {
+                   margin-top: 20px;
+                   padding: 20px;
+                   background-color: #f9f9f9;
+                   border-radius: 8px;
+                   text-align: center;
+                   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+                   width: 100%;
+                   max-width: 800px;
+               }
+               .contact-section {
+                   background-color: #333;
+                   color: #f0f0f0;
+                   padding: 40px 20px;
+                   width: 100%;
+                   text-align: center;
+               }
+               .contact-section h2 {
+                   font-size: 1.5em;
+                   margin-bottom: 20px;
+               }
+               .contact-section form {
+                   display: flex;
+                   flex-direction: column;
+                   align-items: center;
+               }
+               .contact-section input, .contact-section textarea, .contact-section button {
+                   width: 70%;
+                   max-width: 300px;
+                   padding: 10px;
+                   margin: 10px 0;
+                   border-radius: 5px;
+                   border: none;
+                   outline: none;
+                   background-color: #f9f9f9;
+               }
+               .contact-section button {
+                   background-color: #007bff;
+                   color: #fff;
+                   cursor: pointer;
+                   transition: background-color 0.3s ease;
+               }
+               .contact-section button:hover {
+                   background-color: #0056b3;
+               }
+               select {
+                   padding: 10px;
+                   border-radius: 5px;
+                   border: 2px solid #007bff;
+                   background-color: #f9f9f9;
+                   font-size: 16px;
+                   margin: 10px 5px 10px 0;
+                   cursor: pointer;
+                   transition: border-color 0.3s ease;
+               }
+               select:hover {
+                   border-color: #0056b3;
+               }
+               .filter-input {
+                   padding: 10px;
+                   border-radius: 5px;
+                   border: 2px solid #007bff;
+                   background-color: #f9f9f9;
+                   font-size: 16px;
+                   margin-right: 10px;
+                   transition: border-color 0.3s ease;
+                   width: 150px;
+               }
+               .filter-input:hover {
+                   border-color: #0056b3;
+               }
+               .send-button {
+                   padding: 10px 15px;
+                   border-radius: 5px;
+                   border: none;
+                   background-color: #007bff;
+                   color: #fff;
+                   cursor: pointer;
+                   transition: background-color 0.3s ease;
+               }
+               .send-button:hover {
+                   background-color: #0056b3;
+               }
+               .social-links {
+                   margin-top: 20px;
+               }
+               .social-links a {
+                   color: #f0f0f0;
+                   margin: 0 10px;
+                   font-size: 1.2em;
+               }
+               @media (max-width: 768px) {
+                   header h1 {
+                       font-size: 1.4em;
+                   }
+                   .icon {
+                       top: 10px;
+                       font-size: 20px;
+                   }
+                   .notification-icon {
+                       right: 40px;
+                   }
+                   .menu-icon {
+                       right: 10px;
+                   }
+                   .menu-content {
+                       top: 45px;
+                       right: 10px;
+                       width: 200px;
+                   }
+                   .content {
+                       padding: 15px;
+                   }
+                   .contact-section {
+                       padding: 20px;
+                   }
+                   .contact-section h2 {
+                       font-size: 1.3em;
+                   }
+               }
+               
+       
+       .select-area {
+           margin-right: 60px;                /* Space after Select Area */
+       }
+       
+       .select-bus {
+           margin-right: 20px;                /* Space after Select Bus */
+       }
+       
+       .send-button {
+           margin-left: 10px;                 /* Optional space before Send button */
+       }
+       
 
-
-    @keyframes slideDown {
-    0% {
-        transform: translateY(-100px);
-        opacity: 0;
-    }
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-.slide-down {
-    animation: slideDown 0.5s ease-in-out;
-}
-
-        .styled-button {
-    padding: 15px 25px; /* Increased padding */
-    font-size: 18px;    /* Larger font size */
-    border-radius: 8px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-.styled-button:hover {
-    background-color: #2484eb;
-}
-
-        /* Spinner styling */
-        #refresh-spinner {
-            display: none; /* Initially hidden */
-            position: fixed;
-            top: 20px;
-           left: 20px;
-            width: 30px;
-            height: 30px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #007bff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            z-index: 10;
-        }
-        
-        
-    </style>
-</head>
-<body>
-
-    <!-- Spinner Element -->
-    <div id="refresh-spinner"></div>
-
-    
-
-    <script>
-        function showSpinner() {
-            document.getElementById("refresh-spinner").style.display = "block";
-            console.log("Spinner shown");
-        }
-
-        function hideSpinner() {
-            document.getElementById("refresh-spinner").style.display = "none";
-            console.log("Spinner hidden");
-        }
-
-        // Function to simulate fetching data and using spinner
-        async function testSpinner() {
-            showSpinner();
-            await new Promise(resolve => setTimeout(resolve, 20000)); // Simulate a delay
-            hideSpinner();
-        }
-    </script>
-    <style>
         /* Global styling */
         body {
             font-family: Arial, sans-serif;
@@ -99,219 +305,108 @@
             background-color: #ffffff;
             color: #333;
             width: 100%;
-            padding: 10px 0;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 8px 0;
+            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
             position: relative;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
+            max-width: 800px;
         }
         header h1 {
-            font-size: 1.8em;
+            font-size: 1.5em;
+            margin-left: 10px;
+            flex: 1;
         }
         .icon {
-            position: absolute;
-            top: 15px;
-            font-size: 24px;
+            font-size: 20px;
             cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        .icon:hover {
-            transform: scale(1.2);
-        }
-        .notification-icon {
-            right: 50px;
-        }
-        .menu-icon {
-            right: 15px;
+            margin-right: 90px;
         }
         .menu-content, .notification-content {
             display: none;
             position: absolute;
             top: 50px;
-            right: 15px;
+            right: 10px;
             background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-            width: 220px;
+            border-radius: 5px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            width: 180px;
             padding: 10px;
             z-index: 5;
         }
-        .menu-content a, .notification-content p {
-            display: block;
-            padding: 10px;
-            color: #007bff;
-            text-decoration: none;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        .menu-content a:hover {
-            background-color: #f9f9f9;
-        }
-        .content {
-            max-width: 800px;
+        .content, .info-box {
             width: 100%;
-            padding: 20px;
+            padding: 15px;
+            max-width: 800px;
         }
         #map {
-            width: 80%;
-            
+            margin-top: 15px;
+            width: 60%;
             height: 400px;
-            border-radius: 8px;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
             background: url('https://www.forestradar.com/storage/files/forest-monitoring-800x400.jpg?token=bc03dbe73d35c3cbec7a61dac9b5ed23') center/cover;
-            position: relative;
-            z-index: 1;
-        }
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #007bff;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            position: absolute;
-            top: -60px;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
         .info-box {
-            margin-top: 20px;
-            padding: 20px;
+            margin-top: 15px;
+            padding: 15px;
             background-color: #f9f9f9;
-            border-radius: 8px;
+            border-radius: 10px;
             text-align: center;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 800px;
+            font-size: 0.9em;
         }
         .contact-section {
+            margin-top: 15px;
             background-color: #333;
             color: #f0f0f0;
-            padding: 40px 20px;
-            width: 100%;
+            padding: 15px;
             text-align: center;
+            max-width: 800px;
+            font-size: 0.9em;
         }
-        .contact-section h2 {
-            font-size: 1.5em;
-            margin-bottom: 20px;
-        }
-        .contact-section form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .contact-section input, .contact-section textarea, .contact-section button {
-            width: 70%;
-            max-width: 300px;
+        select, .send-button {
+            width: 100%;
             padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: none;
-            outline: none;
-            background-color: #f9f9f9;
-        }
-        .contact-section button {
-            background-color: #007bff;
-            color: #fff;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        .contact-section button:hover {
-            background-color: #0056b3;
-        }
-        select {
-            padding: 10px;
-            border-radius: 5px;
-            border: 2px solid #007bff;
-            background-color: #f9f9f9;
-            font-size: 16px;
-            margin: 10px 5px 10px 0;
-            cursor: pointer;
-            transition: border-color 0.3s ease;
-        }
-        select:hover {
-            border-color: #0056b3;
-        }
-        .filter-input {
-            padding: 10px;
-            border-radius: 5px;
-            border: 2px solid #007bff;
-            background-color: #f9f9f9;
-            font-size: 16px;
-            margin-right: 10px;
-            transition: border-color 0.3s ease;
-            width: 150px;
-        }
-        .filter-input:hover {
-            border-color: #0056b3;
+            font-size: 1em;
+            border-radius: 80px;
+            border: 1px solid #007bff;
+            margin-top: 8px;
         }
         .send-button {
-            padding: 10px 15px;
-            border-radius: 5px;
-            border: none;
             background-color: #007bff;
-            color: #fff;
+            color: #ffffff;
             cursor: pointer;
-            transition: background-color 0.3s ease;
         }
-        .send-button:hover {
-            background-color: #0056b3;
-        }
-        .social-links {
-            margin-top: 20px;
-        }
-        .social-links a {
-            color: #f0f0f0;
-            margin: 0 10px;
-            font-size: 1.2em;
-        }
-        @media (max-width: 768px) {
+        
+        /* Responsive Adjustments for Mobile */
+        @media (max-width: 600px) {
             header h1 {
-                font-size: 1.4em;
+                font-size: 1.2em;
             }
             .icon {
-                top: 10px;
                 font-size: 20px;
+                margin: 0.5px;
             }
-            .notification-icon {
-                right: 40px;
+            .content, .info-box, .contact-section {
+                padding: 10px;
             }
-            .menu-icon {
-                right: 10px;
+            #map {
+                height: 300px;
+                width: 90%;
             }
-            .menu-content {
-                top: 45px;
-                right: 10px;
-                width: 200px;
+            .info-box {
+                font-size: 0.8em;
             }
-            .content {
-                padding: 15px;
-            }
-            .contact-section {
-                padding: 20px;
-            }
-            .contact-section h2 {
-                font-size: 1.3em;
+            select, .send-button {
+                font-size: 0.9em;
+                margin-top: 0px;
+                width: 95%;
+                padding: 5px;
+                border-radius: 80px;
             }
         }
         
-
-.select-area {
-    margin-right: 60px;                /* Space after Select Area */
-}
-
-.select-bus {
-    margin-right: 20px;                /* Space after Select Bus */
-}
-
-.send-button {
-    margin-left: 10px;                 /* Optional space before Send button */
-}
-
     </style>
 </head>
 <body>
@@ -322,7 +417,6 @@
                 document.body.classList.add("slide-down");
             });
         </script>
-        
     <header>
         <h1>Live Bus Tracker</h1>
         <div class="notification-icon icon" onclick="toggleNotifications(event)">🔔</div>
@@ -339,52 +433,45 @@
             <a href="#">Help</a>
         </div>
     </header>
-    
-    </script>
+
     <div class="select-container">
-        <select id="area-select" class="styled-button" fdprocessedid="rr8rvl" onchange="updateBusOptions()">
+        <select id="area-select" class="styled-button" onchange="updateBusOptions()">
             <option value="">Select area</option>
         </select>
-        <select id="busSelect" class="styled-button" fdprocessedid="glz7zh">
+        <select id="busSelect" class="styled-button">
             <option value="">Select bus</option>
         </select>
-        <button type="button" onclick="sendFilter()" class="styled-button" fdprocessedid="upzw3">Send</button>
+        <button type="button" onclick="sendFilter()" class="send-button">Send</button>
     </div>
 
     <div id="map"></div>
 
-        <div class="info-box">
-            <h2>Bus Information</h2>
-            <p id="busName" >Bus Name:  <span>select bus</span></p>
-            <p id="busOwner">Bus Location:  <span id="owner-name">Fetching location...</span></p>
-            
-            <p id="busETA">Current Crowd Level:  <span id="eta">Calculating crowd...</span></p>
-            <p id="busCrowd">Estimated Time to Reach:  </strong> <span id="crowd-level">calculating time....</span></p>
-            <p id="nbu">Number of Buses Available:  <span id="bus-count">Calculating...</span></p>
-        </div>
+    <div class="info-box">
+        <h2>Bus Information</h2>
+        <p id="busName">Bus Name: <span>select bus</span></p>
+        <p id="busOwner">Bus Location: <span id="owner-name">Fetching location...</span></p>
+        <p id="busETA">Current Crowd Level: <span id="eta">Calculating crowd...</span></p>
+        <p id="busCrowd">Estimated Time to Reach: <span id="crowd-level">Calculating time...</span></p>
+        <p id="nbu">Number of Buses Available: <span id="bus-count">Calculating...</span></p>
     </div>
 
     <section class="contact-section">
         <h2>Contact Us</h2>
-    <form action="https://formspree.io/f/xjkvyavb" method="POST">
-        <textarea name="your name" placeholder="Write your name" required></textarea>
-        <input type="email" name="email" placeholder="Your email" required/>
-        <textarea name="comment" placeholder="Write your comment..." required></textarea>
-        
-        <button type="submit">Submit</button>
-    </form>
+        <form action="https://formspree.io/f/xjkvyavb" method="POST">
+            <input type="text" name="your name" placeholder="Write your name" required style="width:100%; margin-bottom: 8px;">
+            <input type="email" name="email" placeholder="Your email" required style="width:100%; margin-bottom: 8px;">
+            <textarea name="comment" placeholder="Write your comment..." required style="width:100%; height: 80px; margin-bottom: 8px;"></textarea>
+            <button type="submit" class="send-button">Submit</button>
+        </form>
         <p>Owner: Prajwal Rawoot</p>
         <p>Email: prajwalprawoot@gmail.com</p>
         <p>Phone: +91 8088361612</p>
-        <div class="social-links">
+        <div class="social-links" style="display:flex; justify-content:center; gap:10px; margin-top: 8px;">
             <a href="mailto:prajwalprawoot@gmail.com">📧 Email</a>
-            <a href="https://www.instagram.com/prajwal._.07/profilecard/?igsh=Mm0xcm5jNTVwZDk3">📸 Instagram</a>
-            <a href="https://www.linkedin.com/in/prajwal-rawoot-698424330?utm_source=share&amp;utm_campaign=share_via&amp;utm_content=profile&amp;utm_medium=android_app">💼 LinkedIn</a>
+            <a href="https://www.instagram.com/prajwal.___.07">📸 Instagram</a>
+            <a href="https://www.linkedin.com/in/prajwal-rawoot-698424330">💼 LinkedIn</a>
         </div>
     </section>
-
-    </section>
-
     <script>
         
         // URLs of the Google Sheets for different areas
