@@ -1,0 +1,567 @@
+<html lang="en">
+<head>
+    
+    
+    <style>
+       
+
+.styled-button {
+    margin-left: 10px;     /* Optional: Add space between the dropdown and button */
+    padding: 10px;         /* Adjust padding as needed */
+}
+
+
+    @keyframes slideDown {
+    0% {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.slide-down {
+    animation: slideDown 0.5s ease-in-out;
+}
+
+        .styled-button {
+    padding: 15px 25px; /* Increased padding */
+    font-size: 18px;    /* Larger font size */
+    border-radius: 8px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.styled-button:hover {
+    background-color: #2484eb;
+}
+
+        /* Spinner styling */
+        #refresh-spinner {
+            display: none; /* Initially hidden */
+            position: fixed;
+            top: 20px;
+           left: 20px;
+            width: 30px;
+            height: 30px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            z-index: 10;
+        }
+        
+        
+    </style>
+</head>
+<body>
+
+    <!-- Spinner Element -->
+    <div id="refresh-spinner"></div>
+
+    
+
+    <script>
+        function showSpinner() {
+            document.getElementById("refresh-spinner").style.display = "block";
+            console.log("Spinner shown");
+        }
+
+        function hideSpinner() {
+            document.getElementById("refresh-spinner").style.display = "none";
+            console.log("Spinner hidden");
+        }
+
+        // Function to simulate fetching data and using spinner
+        async function testSpinner() {
+            showSpinner();
+            await new Promise(resolve => setTimeout(resolve, 20000)); // Simulate a delay
+            hideSpinner();
+        }
+    </script>
+    <style>
+        /* Global styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #007bff, #6f42c1);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            background-color: #ffffff;
+            color: #333;
+            width: 100%;
+            padding: 10px 0;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        header h1 {
+            font-size: 1.8em;
+        }
+        .icon {
+            position: absolute;
+            top: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .icon:hover {
+            transform: scale(1.2);
+        }
+        .notification-icon {
+            right: 50px;
+        }
+        .menu-icon {
+            right: 15px;
+        }
+        .menu-content, .notification-content {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 15px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            width: 220px;
+            padding: 10px;
+            z-index: 5;
+        }
+        .menu-content a, .notification-content p {
+            display: block;
+            padding: 10px;
+            color: #007bff;
+            text-decoration: none;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .menu-content a:hover {
+            background-color: #f9f9f9;
+        }
+        .content {
+            max-width: 800px;
+            width: 100%;
+            padding: 20px;
+        }
+        #map {
+            width: 80%;
+            
+            height: 400px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+            background: url('https://www.forestradar.com/storage/files/forest-monitoring-800x400.jpg?token=bc03dbe73d35c3cbec7a61dac9b5ed23') center/cover;
+            position: relative;
+            z-index: 1;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .info-box {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 800px;
+        }
+        .contact-section {
+            background-color: #333;
+            color: #f0f0f0;
+            padding: 40px 20px;
+            width: 100%;
+            text-align: center;
+        }
+        .contact-section h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        .contact-section form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .contact-section input, .contact-section textarea, .contact-section button {
+            width: 70%;
+            max-width: 300px;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            background-color: #f9f9f9;
+        }
+        .contact-section button {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .contact-section button:hover {
+            background-color: #0056b3;
+        }
+        select {
+            padding: 10px;
+            border-radius: 5px;
+            border: 2px solid #007bff;
+            background-color: #f9f9f9;
+            font-size: 16px;
+            margin: 10px 5px 10px 0;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+        select:hover {
+            border-color: #0056b3;
+        }
+        .filter-input {
+            padding: 10px;
+            border-radius: 5px;
+            border: 2px solid #007bff;
+            background-color: #f9f9f9;
+            font-size: 16px;
+            margin-right: 10px;
+            transition: border-color 0.3s ease;
+            width: 150px;
+        }
+        .filter-input:hover {
+            border-color: #0056b3;
+        }
+        .send-button {
+            padding: 10px 15px;
+            border-radius: 5px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .send-button:hover {
+            background-color: #0056b3;
+        }
+        .social-links {
+            margin-top: 20px;
+        }
+        .social-links a {
+            color: #f0f0f0;
+            margin: 0 10px;
+            font-size: 1.2em;
+        }
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.4em;
+            }
+            .icon {
+                top: 10px;
+                font-size: 20px;
+            }
+            .notification-icon {
+                right: 40px;
+            }
+            .menu-icon {
+                right: 10px;
+            }
+            .menu-content {
+                top: 45px;
+                right: 10px;
+                width: 200px;
+            }
+            .content {
+                padding: 15px;
+            }
+            .contact-section {
+                padding: 20px;
+            }
+            .contact-section h2 {
+                font-size: 1.3em;
+            }
+        }
+        
+
+.select-area {
+    margin-right: 60px;                /* Space after Select Area */
+}
+
+.select-bus {
+    margin-right: 20px;                /* Space after Select Bus */
+}
+
+.send-button {
+    margin-left: 10px;                 /* Optional space before Send button */
+}
+
+    </style>
+</head>
+<body>
+    <body class="slide-down">
+        <script>
+            // Reapply the 'slide-down' class when refreshing
+            document.addEventListener("DOMContentLoaded", function () {
+                document.body.classList.add("slide-down");
+            });
+        </script>
+        
+    <header>
+        <h1>Live Bus Tracker</h1>
+        <div class="notification-icon icon" onclick="toggleNotifications(event)">🔔</div>
+        <div class="menu-icon icon" onclick="toggleMenu(event)">☰</div>
+        <div id="notifications" class="notification-content">
+            <p>No new notifications</p>
+        </div>
+        <div id="menu" class="menu-content">
+            <a href="#">Home</a>
+            <a href="#">Bus Routes</a>
+            <a href="#">Book Local Bus Tickets</a>
+            <a href="#">Book Long Distance Bus Tickets</a>
+            <a href="#">Settings</a>
+            <a href="#">Help</a>
+        </div>
+    </header>
+    
+    </script>
+    <div class="select-container">
+        <select id="area-select" class="styled-button" fdprocessedid="rr8rvl" onchange="updateBusOptions()">
+            <option value="">Select area</option>
+        </select>
+        <select id="busSelect" class="styled-button" fdprocessedid="glz7zh">
+            <option value="">Select bus</option>
+        </select>
+        <button type="button" onclick="sendFilter()" class="styled-button" fdprocessedid="upzw3">Send</button>
+    </div>
+
+    <div id="map"></div>
+
+        <div class="info-box">
+            <h2>Bus Information</h2>
+            <p id="busName" >Bus Name:  <span>select bus</span></p>
+            <p id="busOwner">Bus Location:  <span id="owner-name">Fetching location...</span></p>
+            
+            <p id="busETA">Current Crowd Level:  <span id="eta">Calculating crowd...</span></p>
+            <p id="busCrowd">Estimated Time to Reach:  </strong> <span id="crowd-level">calculating time....</span></p>
+            <p id="nbu">Number of Buses Available:  <span id="bus-count">Calculating...</span></p>
+        </div>
+    </div>
+
+    <section class="contact-section">
+        <h2>Contact Us</h2>
+    <form action="https://formspree.io/f/xjkvyavb" method="POST">
+        <textarea name="your name" placeholder="Write your name" required></textarea>
+        <input type="email" name="email" placeholder="Your email" required/>
+        <textarea name="comment" placeholder="Write your comment..." required></textarea>
+        
+        <button type="submit">Submit</button>
+    </form>
+        <p>Owner: Prajwal Rawoot</p>
+        <p>Email: prajwalprawoot@gmail.com</p>
+        <p>Phone: +91 8088361612</p>
+        <div class="social-links">
+            <a href="mailto:prajwalprawoot@gmail.com">📧 Email</a>
+            <a href="https://www.instagram.com/prajwal._.07/profilecard/?igsh=Mm0xcm5jNTVwZDk3">📸 Instagram</a>
+            <a href="https://www.linkedin.com/in/prajwal-rawoot-698424330?utm_source=share&amp;utm_campaign=share_via&amp;utm_content=profile&amp;utm_medium=android_app">💼 LinkedIn</a>
+        </div>
+    </section>
+
+    </section>
+
+    <script>
+        
+        // URLs of the Google Sheets for different areas
+        const sheetUrls = {
+    "Bengaluru Urban": 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRAhjV572Fsv554BIfVfJ4XvzPkOumZpqOTgLzqVrs56Vo-kkluwL4iBJ34fchVg9sv-zKwVEdGF14B/pub?gid=1493591712&single=true&output=csv',
+    "Bengaluru Rural": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_BENGALURU_RURAL/pub?output=csv',
+    "Belagavi": 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRAhjV572Fsv554BIfVfJ4XvzPkOumZpqOTgLzqVrs56Vo-kkluwL4iBJ34fchVg9sv-zKwVEdGF14B/pub?gid=654250982&single=true&output=csv',
+    "Ballari": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_BALLARI/pub?output=csv',
+    "Bidar": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_BIDAR/pub?output=csv',
+    "Chamarajanagar": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_CHAMARAJANAGAR/pub?output=csv',
+    "Chikkaballapur": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_CHIKKABALLAPUR/pub?output=csv',
+    "Chikkamagaluru": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_CHIKKAMAGALURU/pub?output=csv',
+    "Dharwad": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_DHARWAD/pub?output=csv',
+    "Dakshina Kannada": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_DAKSHINA_KANNADA/pub?output=csv',
+    "Davanagere": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_DAVANAGERE/pub?output=csv',
+    "Gadag": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_GADAG/pub?output=csv',
+    "Kalaburagi": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_KALABURAGI/pub?output=csv',
+    "Hassan": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_HASSAN/pub?output=csv',
+    "Haveri": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_HAVERI/pub?output=csv',
+    "Kodagu": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_KODAGU/pub?output=csv',
+    "Kolar": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_KOLAR/pub?output=csv',
+    "Mandya": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_MANDYA/pub?output=csv',
+    "Mysuru": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_MYSURU/pub?output=csv',
+    "Raichur": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_RAICHUR/pub?output=csv',
+    "Ramanagara": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_RAMANAGARA/pub?output=csv',
+    "Shivamogga": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_SHIVAMOGGA/pub?output=csv',
+    "Tumakuru": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_TUMAKURU/pub?output=csv',
+    "Udupi": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_UDUPI/pub?output=csv',
+    "Uttara Kannada": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_UTTARA_KANNADA/pub?output=csv',
+    "Vijayapura": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_VIJAYAPURA/pub?output=csv',
+    "Yadgir": 'https://docs.google.com/spreadsheets/d/e/YOUR_SHEET_ID_FOR_YADGIR/pub?output=csv',
+};
+
+// Update the dropdown menu with these district names
+const districtSelect = document.getElementById('area-select'); // Make sure the HTML element has id="area-select"
+for (const district in sheetUrls) {
+    const option = document.createElement("option");
+    option.value = district;
+    option.text = district;
+    districtSelect.appendChild(option);
+}
+
+// Function to load data based on selected district
+function loadDistrictData() {
+    const selectedDistrict = districtSelect.value;
+    const csvUrl = sheetUrls[selectedDistrict];
+    if (csvUrl) {
+        // Fetch and process the data
+        fetch(csvUrl)
+            .then(response => response.text())
+            .then(data => {
+                const rows = data.split('\n').map(row => row.split(','));
+                // Process the rows as per your requirements
+                console.log(rows); // Replace this with your actual processing code
+            })
+            .catch(error => console.error("Error loading data:", error));
+    }
+}
+
+// Call loadDistrictData() when the selection changes
+districtSelect.addEventListener("change", loadDistrictData);
+
+
+        async function updateBusOptions() {
+            const area = document.getElementById('area-select').value;
+            if (area && sheetUrls[area]) {
+                console.log(`Fetching data for area: ${area}`);
+                try {
+                    const response = await fetch(sheetUrls[area]);
+                    if (!response.ok) {
+                        console.error(`Failed to fetch data for ${area}: Status ${response.status}`);
+                        alert(`Failed to load data for ${area}. Please check the sheet's access permissions.`);
+                        return;
+                    }
+                    const csvData = await response.text();
+                    console.log('CSV data received:', csvData);
+                    const busData = parseCSV(csvData);
+                    populateBusDropdown(busData);
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                    alert("Error fetching the data. Make sure the sheet is published and accessible.");
+                }
+            } else {
+                console.log("No area selected or invalid sheet URL.");
+                clearBusOptions();
+            }
+        }
+
+        // Clear bus options if no area selected
+        function clearBusOptions() {
+            const busSelect = document.getElementById('busSelect');
+            busSelect.innerHTML = '<option value="">Select bus</option>';
+            clearBusInfo();
+        }
+
+        // Parse CSV into an array of objects
+        function parseCSV(data) {
+            const rows = data.split('\n');
+            const headers = rows[0].split(',');
+            const parsedData = rows.slice(1).map(row => {
+                const values = row.split(',');
+                let obj = {};
+                headers.forEach((header, i) => {
+                    obj[header.trim()] = values[i] ? values[i].trim() : "";
+                });
+                return obj;
+            });
+            console.log("Parsed CSV data:", parsedData);
+            return parsedData;
+        } 
+
+        // Populate the dropdown with bus names
+        function populateBusDropdown(busData) {
+            const busSelect = document.getElementById('busSelect');
+            busSelect.innerHTML = '<option value="">Select bus</option>';
+            busData.forEach(bus => {
+                const option = document.createElement('option');
+                option.value = bus["Bus Name"];
+                option.textContent = bus["Bus Name"];
+                busSelect.appendChild(option);
+            });
+            busSelect.onchange = () => displayBusInfo(busData);
+            console.log("Bus options populated.");
+        }
+
+        // Display selected bus information
+        function displayBusInfo(busData) {
+            const busSelect = document.getElementById('busSelect');
+            const selectedBus = busData.find(bus => bus["Bus Name"] === busSelect.value);
+
+            if (selectedBus) {
+                document.getElementById('busName').textContent = "Bus Name: " + selectedBus["Bus Name"];
+                document.getElementById('busOwner').textContent = "Bus Location: " + selectedBus["Owner Name"];
+                
+                document.getElementById('busETA').textContent = "Estimated Time to Reach: " + selectedBus["Estimated Arrival"];
+                document.getElementById('busCrowd').textContent = "Current Crowd Level: " + selectedBus["Crowd"];
+                document.getElementById('nbu').textContent = "Number of Buses Available: " + selectedBus["Bus Count"];
+                console.log("Displayed bus info for:", selectedBus["Bus Name"]);
+            } else {
+                console.log("No bus selected or bus data missing.");
+                clearBusInfo();
+            }
+        }
+
+        // Clear displayed bus information
+        function clearBusInfo() {
+            document.getElementById('busName').textContent = "Bus Name: Select bus";
+            document.getElementById('busOwner').textContent = "Bus Location:  Fetching...";
+            document.getElementById('busLocation').textContent = "Bus Location: Fetching location...";
+            document.getElementById('busETA').textContent = "Estimated Time to Reach: Calculating time...";
+            document.getElementById('busCrowd').textContent = "Current Crowd Level: Calculating crowd...";
+            document.getElementById('nbu').textContent = "Number of Buses Available: Calculating...";
+        }
+        function toggleMenu(event) {
+            event.stopPropagation();
+            let menu = document.getElementById('menu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function toggleNotifications(event) {
+            event.stopPropagation();
+            let notifications = document.getElementById('notifications');
+            notifications.style.display = notifications.style.display === 'block' ? 'none' : 'block';
+        }
+
+        document.addEventListener('click', function() {
+            document.getElementById('menu').style.display = 'none';
+            document.getElementById('notifications').style.display = 'none';
+        });
+
+        function sendFilter() {
+            let selectedBus = document.getElementById('bus-select').value;
+            let selectedFilter = document.getElementById('filter-select').value;
+            document.getElementById('selected-bus').textContent = selectedBus;
+            console.log('Selected Bus:', selectedBus);
+            console.log('Selected Filter:', selectedFilter);
+        }
+    </script>
+</body>
+</html>
